@@ -1,0 +1,200 @@
+@import '../theme/mixins.scss';
+
+$startColor: #ff6347;
+$userColor: #f4c63d;
+$finalColor: #00bfff;
+$areaOpacity: 0.2;
+
+.ct-chart {
+	&-wrap {
+		position: relative;
+		width: 500px;
+		margin: 0 auto;
+		padding: 0 30px;
+		font-size: 14px;
+		
+		&,
+		*,
+		*::before,
+		*::after {
+			box-sizing: border-box;
+		}
+		
+		@media screen and (max-width: 500px) {
+			width: 100%;
+		}
+	}
+	&-overlay {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		z-index: 1;
+		@include no-select();
+	}
+	&-title {
+		width: 80%;
+		margin: 0 auto 40px;
+		text-align: center;
+	}
+	&-btn {
+		position: relative;
+		z-index: 1;
+		display: block;
+		width: 200px;
+		margin: 30px auto;
+		padding: 10px 13px;
+		border-radius: 50px;
+		overflow: hidden;
+		border: none;
+		outline: none;
+		font-family: 'Open Sans', sans-serif;
+		font-weight: 100;
+		font-size: 14px;
+		color: #fff;
+		letter-spacing: 3px;
+		text-decoration: none;
+		text-transform: uppercase;
+		background-color: #dddddd;
+		transition: all 0.4s cubic-bezier(0.25, 0.1, 0.2, 1);
+		cursor: pointer;
+		&:before,
+		&:after {
+			content: '';
+			position: absolute;
+			display: block;
+		}
+		&:before {
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			z-index: -1;
+			transform: translateX(-101%);
+			background-color: $userColor;
+			transition: all 0.4s cubic-bezier(0.25, 0.1, 0.2, 1);
+		}
+		&:enabled:before {
+			transform: translateX(0);
+		}
+		&:enabled:hover:before {
+			background-color: #efc13d;
+		}
+		&:disabled {
+			opacity: 0.4;
+		}
+	}
+	
+	& > svg {
+		overflow: visible;
+	}
+	
+	.ct-legend {
+		font-size: 1em;
+		font-weight: 100;
+		text-transform: uppercase;
+		&-start {
+			fill: $startColor;
+		}
+		&-final {
+			fill: $finalColor;
+		}
+		&-instructions {
+			//fill: $userColor;
+			text-transform: none;
+		}
+	}
+	
+	.ct-point-value {
+		fill: #333;
+		font-weight: bold;
+		font-size: 0.875em;
+	}
+	
+	.ct-line {
+		//stroke-linecap: round;
+		stroke-linejoin: bevel;
+	}
+	
+	.ct-area {
+		fill-opacity: $areaOpacity;
+	}
+	
+	.ct-series {
+		&-a { // final
+			opacity: 1;
+			.ct-area {
+				fill: $finalColor;
+			}
+			.ct-line {
+				stroke: $finalColor;
+			}
+			.ct-point {
+				opacity: 0;
+				stroke: $finalColor;
+				&:last-of-type {
+					opacity: 1;
+				}
+			}
+		}
+		&-b { // user
+			.ct-point-value {
+				fill: $userColor;
+			}
+			.ct-line {
+				stroke: $userColor;
+				stroke-dasharray: 1 7;
+				stroke-linecap: round;
+			}
+			.ct-point {
+				opacity: 0;
+				stroke: $userColor;
+				&:last-of-type:not(:first-of-type) {
+					opacity: 1;
+				}
+			}
+		}
+		&-c { // start
+			.ct-area {
+				fill: $startColor;
+			}
+			.ct-line {
+				stroke: $startColor;
+			}
+			.ct-point {
+				stroke: $startColor;
+				opacity: 0;
+				&:last-of-type,
+				&:first-of-type {
+					opacity: 1;
+				}
+				&.animated {
+					animation: scale 1000ms infinite;
+					transform-origin: 50% 50%;
+				}
+			}
+			// line:nth-of-type(-n+5) {
+			// 	opacity: 0;
+			// }
+		}
+	}
+	
+	.ct-blink-rect {
+		opacity: 0.6;
+		animation: blink 1000ms infinite;
+		transform-origin: 50% 50%;
+	}
+}
+
+@keyframes scale {
+	50% {
+		transform: scale(1.25);
+	}
+}
+
+@keyframes blink {
+	50% {
+		opacity: 0.2;
+	}
+}

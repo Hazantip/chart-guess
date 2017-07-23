@@ -1,0 +1,19 @@
+@import '../../node_modules/normalize.css/normalize.css';
+@import '../../node_modules/chartist/dist/scss/chartist';
+
+html, body {
+	height: 100%;
+}
+
+.page {
+	padding-top: 60px;
+}
+
+#log {
+	display: block;
+	width: 80%;
+	margin: 0 auto;
+	max-height: 200px;
+	overflow: auto;
+	font-size: 12px;
+}
